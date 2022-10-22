@@ -30,6 +30,7 @@ public class AccuweatherModel implements WeatherModel {
     public void getWeather (String city, Period period) throws IOException {
         switch (period) {
             case NOW:
+                int countDays = 1;
                 HttpUrl url = new HttpUrl.Builder()
                         .scheme(PTOTOCOL)
                         .host(BASE_HOST)
@@ -47,10 +48,11 @@ public class AccuweatherModel implements WeatherModel {
                 Response oneDayResponse = okHttpClient.newCall(request).execute();
                 String oneDayWeatherResponse = oneDayResponse.body().string();
                 System.out.println("В городе " + city);
-                WeatherResponse.parse(oneDayWeatherResponse, Period.NOW);
+                WeatherResponse.parse(oneDayWeatherResponse, countDays);
                 break;
 
             case FIVE_DAYS:
+                countDays = 5;
                 HttpUrl urlFive = new HttpUrl.Builder()
                         .scheme(PTOTOCOL)
                         .host(BASE_HOST)
@@ -68,7 +70,7 @@ public class AccuweatherModel implements WeatherModel {
                 Response fiveDayResponse = okHttpClient.newCall(requestFive).execute();
                 String fiveDayWeatherResponse = fiveDayResponse.body().string();
                 System.out.println("В городе " + city);
-                WeatherResponse.parse(fiveDayWeatherResponse, Period.FIVE_DAYS);
+                WeatherResponse.parse(fiveDayWeatherResponse, countDays);
                 break;
         }
 
